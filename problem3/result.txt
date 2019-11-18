@@ -1,0 +1,6 @@
+["Valjean", 16]
+["MlleBaptistine", 3]
+["Champtercier", 1]
+["Myriel", 5]
+["MmeMagloire", 1]
+["Napoleon", 1]
