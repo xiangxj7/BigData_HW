@@ -10,24 +10,17 @@ def mapper(record):
     value = record[0]
     res = []
     for key in keys:
-        res.append((key, value))
+        res.append((key, "\"" + value + "\""))
     return res
 
-def reducer(v1, v2):
-    if type(v1) == type([]) and type(v2) == type([]):
-        return list(set(v1 + v2))
-    elif type(v1) == type([]) and type(v2) != type([]):
-        return list(set(v1.append(v2)))
-    elif type(v1) != type([]) and type(v2) == type([]):
-        return list(set(v2.append(v1)))
-    else:
-        return list(set([v1, v2]))
 
 
 sc = SparkContext('local', 'test')
-textFile = sc.textFile("file:///home/root/bigdata/problem1//books.json")
-invertedIndex = textFile.flatMap(lambda row: (json.loads(row)))
+textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem1//books.json")
+invertedIndex = textFile.map(lambda row: json.loads(row))
 invertedIndex = invertedIndex.flatMap(mapper)
-invertedIndex = invertedIndex.reduceByKey(reducer)
+invertedIndex = invertedIndex.reduceByKey(lambda a, b: a + ", " + b)
+invertedIndex = invertedIndex.map(lambda x : (x[0], "[" + x[1] + "]"))
 
 invertedIndex.foreach(print)
+invertedIndex.saveAsTextFile("spark_result.txt")

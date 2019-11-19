@@ -8,6 +8,7 @@ from __future__ import print_function
 from pyspark import SparkContext
 import json
 sc = SparkContext( 'local', 'test')
-textFile = sc.textFile("file:///home/root/bigdata/wordcount//words.json")
+#textFile = sc.textFile("file:///home/root/bigdata/wordcount//words.json")
+textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/wordcount//words.json")
 wordCount = textFile.flatMap(lambda row:json.loads(row)[1].split(' ')).map(lambda word:(word,1)).reduceByKey(lambda a,b:a+b)
 wordCount.foreach(print)
