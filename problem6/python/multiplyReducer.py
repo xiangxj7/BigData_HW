@@ -4,13 +4,6 @@
 import json
 import sys
 
-def out_dic(dic):
-    result = []
-    for key in dic:
-        result.append((key, dic[key]))
-    jenc = json.JSONEncoder()
-    for item in result:
-       print(jenc.encode(item))
 
 res = {}
 
