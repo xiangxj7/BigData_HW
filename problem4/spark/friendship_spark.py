@@ -17,7 +17,8 @@ def friend(arr):
 
 
 sc = SparkContext('local', 'test')
-textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem4//friends.json")
+# textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem4//friends.json")
+textFile = sc.textFile("hdfs:///user/root/input//friends.json")
 friendship = textFile.map(lambda row: json.loads(row))
 friendship = friendship.flatMap(lambda record: [(record[0], [record[1]]), (record[1], [record[0]])])
 friendship = friendship.reduceByKey(lambda a, b: a + b)

@@ -13,14 +13,27 @@ def mapper(record):
         res.append((key, "\"" + value + "\""))
     return res
 
+def format(x):
+    l = x[1]
+    words = l.split(", ")
+    wo = set(words)
+    res = "["
+    for i in wo:
+        if res == '[':
+            res += i
+        else:
+            res += ", " + i
+    res += "]"
+    return (x[0], res)
 
 
 sc = SparkContext('local', 'test')
-textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem1//books.json")
+# textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem1//books.json")
+textFile = sc.textFile("hdfs:///user/root/input//books.json")
 invertedIndex = textFile.map(lambda row: json.loads(row))
 invertedIndex = invertedIndex.flatMap(mapper)
 invertedIndex = invertedIndex.reduceByKey(lambda a, b: a + ", " + b)
-invertedIndex = invertedIndex.map(lambda x : (x[0], "[" + x[1] + "]"))
+invertedIndex = invertedIndex.map(format)
 
 invertedIndex.foreach(print)
 invertedIndex.saveAsTextFile("spark_result.txt")

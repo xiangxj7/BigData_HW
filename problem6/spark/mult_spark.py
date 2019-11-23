@@ -34,7 +34,8 @@ def reducer(res):
 
 
 sc = SparkContext('local', 'test')
-textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem6//matrix.json")
+# textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem6//matrix.json")
+textFile = sc.textFile("hdfs:///user/root/input//matrix.json")
 matrixRRD = textFile.map(lambda row: json.loads(row))
 matrixRRD = matrixRRD.flatMap(mapper)
 matrixRRD = matrixRRD.reduceByKey(lambda a, b: a + b)

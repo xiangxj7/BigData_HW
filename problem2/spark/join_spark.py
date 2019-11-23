@@ -16,7 +16,8 @@ def join(arr):
 
 
 sc = SparkContext('local', 'test')
-textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem2//records.json")
+# textFile = sc.textFile("file:///home/xiangxj7/BigData/MapReduce Assignments(data)/problem2//records.json")
+textFile = sc.textFile("hdfs:///user/root/input//records.json")
 joinRDD = textFile.map(lambda row: (json.loads(row)[1], [json.loads(row)]))
 joinRDD = joinRDD.reduceByKey(lambda a, b: a + b)
 joinRDD = joinRDD.flatMap(join)
